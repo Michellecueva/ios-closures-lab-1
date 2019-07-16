@@ -24,7 +24,16 @@ Hello Closures!
 Hello Closures!
 Hello Closures!
 ```
+``` swift
 
+
+func applyKTimes(_ k: Int, _ closure: () -> ()) {
+    for _ in 0..<k {
+        closure()
+    }
+}
+
+```
 
 ## Question 2
 
@@ -36,6 +45,11 @@ Example:
 Input: `let numbers = [1, 2, 3, 4, 6, 8, 9, 3, 12, 11]`
 
 Expected values: `multiples = [3, 6, 9, 3, 12]`
+``` swift 
+
+let multiplesOf3 = numbers.filter({a in a % 3 == 0})
+
+```
 
 
 ## Question 3
@@ -46,7 +60,11 @@ Example:
 Input: `let numbers = [4, 7, 1, 9, 6, 5, 6, 9]`
 
 Output: `9`
+``` swift 
 
+let reduceToFindLargestElement = numbers.reduce(0, {x, y in return x > y ? x: y })
+
+```
 
 ## Question 4
 
@@ -56,7 +74,11 @@ Example:
 Input: `let strings = ["We", "Heart", "Swift"]`
 
 Output: `"We Heart Swift"`
+``` swift 
 
+let sent = strings.reduce(""){$0 + $1 + " "}
+
+```
 
 ## Question 5
 
@@ -68,6 +90,15 @@ b. Use `sortedBy` to sort `cities` alphabetical order of the second character of
 
 c. Use `sortedBy` to sort `cities` in order of the length of the city name.
 
+``` swift
+
+let sortByFirstLetter = cities.sorted{$0 < $1}
+
+let sortBySecondLetter = cities.sorted{$0.dropFirst() < $1.dropFirst()}
+
+let sortByLength = cities.sorted{$0.count  < $1.count}
+```
+
 
 ## Question 6
 
@@ -76,6 +107,14 @@ c. Use `sortedBy` to sort `cities` in order of the length of the city name.
 a. Use `sortedBy` to sort `citiesWithPopulation` in ascending order of population.
 
 b. Use `sortedBy` to sort `citiesWithPopulation` in reverse alphabetical order of the last character in the city name.
+
+``` swift 
+
+let sortedByPopulation = citiesWithPopulation.sorted{$0.1 < $1.1}
+
+let sortedByLastChar = citiesWithPopulation.sorted{$0.0.suffix(1) > $1.0.suffix(1)}
+
+```
 
 
 ## Question 7
@@ -98,27 +137,82 @@ numbers = [1, 2, 3, 5, 4, 6]
 
 // [1, 5, 2, 3, 4, 6] would also have been a valid solution
 ```
+``` swift 
 
+func divisor(x:Int, y:Int) -> Bool {
+    var xcount = 0
+    var ycount = 0
+
+    for i in 1...x where x % i == 0 {
+        xcount += 1
+    }
+
+    for i in 1...y where y % i == 0 {
+        ycount += 1
+    }
+
+    return xcount < ycount
+
+}
+
+let sortedByDivisor = [1,2,3,4,5,6].sorted(by: divisor)
+
+```
 
 ## Question 8
 
 Find the sum of the squares of all the odd numbers from `numbers` and then print it.
+``` swift 
 
 `var numbers = [1, 2, 3, 4, 5, 6]`
 
+var sumOfSquares = numbers.map{$0 * $0}.reduce(0,{$0 + $1})
+
+
 a. Write code that removes all the odd numbers from the array.
+
+var oddNumbers = [Int]()
+
+for i in numbers where i % 2 == 0 {
+    oddNumbers.append(i)
+}
+
 
 b. Write code that squares all the numbers in the array.
 
+
+var numbersSquared = [Int]()
+
+for i in numbers {
+    numbersSquared.append(i * i)
+}
+
+
 c. Write code that finds the sum of the array.
 
+var sum = 0
+
+for i in numbers {
+    sum += i
+}
+
+
 d. Now use `map`, `filter` and `reduce` to solve this problem.
+
+
+var sumOfNumbers = numbers.filter{$0 % 2 == 0}
+
+var NumbersSquared = numbers.map{$0 * $0}
+
+var sumOfNumbers = numbers.reduce(0, {$0 + $1})
+
 
 Example:
 Input: `var numbers = [1, 2, 3, 4, 5, 6]`
 
 Output: `35 // 1 + 9 + 25 -> 35`
 
+```
 
 ## Question 9
 
@@ -131,6 +225,16 @@ Function with Input:
 forEach([1, 2, 3, 4]) {
     print($0 * $0)
 }
+```
+
+``` swift 
+
+func forEach(_ array: [Int], _ closure: (Int) -> ()) {
+    for i in array {
+        closure(i)
+    }
+}
+
 ```
 
 Output:
@@ -155,6 +259,18 @@ var array2 = [5,5,5,3]
 combineArrays(array1,array2) {
     $0 * $1
 }
+```
+``` swift
+
+func combineArrays(_ arr1: [Int], _ arr2: [Int], _ closure: (Int, Int) -> Int) {
+    var buildArray = [Int]()
+    for i in 0..<arr1.count {
+        let result = closure(arr1[i], arr2[i])
+        buildArray.append(result)
+    }
+    print(buildArray)
+}
+
 ```
 
 Output: `[5,10,15,12]`
@@ -281,19 +397,60 @@ Des Prez, Josquin
 ...etc
 ```
 
+``` swift 
+
+let sortedArr = firstAndLastTuples.sorted{$0.1 < $1.1}
+
+for tuple in sortedArr {
+    print("\(tuple.1), \(tuple.0)")
+}
+
+```
+
 ## Question 16
 
 a) Write a function called `myFilter` that takes an array of Doubles and a closure as parameters and returns an array of Doubles. The closure should take a Double and return a Bool. The function should apply the closure to the doubles in the array.
 
 `let theDoubles = [11.45, 3.2, 4.0, 5.67, 58.65, 66.0, 5.2, 5.0]`
+```swift 
+
+func myFilter(arr: [Double], filter closure: (Double) -> Bool) -> [Double] {
+    return arr.filter(closure)
+}
+
+```
 
 b) Define a closure assigned to a constant called `biggerThanTen` that takes a double and returns true if it is greater or equal to 10.0 and pass it to `myFilter`.
+``` swift 
+let biggerThanTen: (Double) -> Bool = {x in
+    return x >= 10.0    
+}
+
+```
 
 c) Define a closure assigned to a constant called `wholeNumber` that takes a double and returns true if it is a whole number and pass it to `myFilter`.
+``` swift 
+let wholeNumber: (Double) -> Bool = {x in
+    return x.truncatingRemainder(dividingBy: 1.0) == 0
+}
 
+```
 d) Define a closure assigned to a constant called `justEven` that takes a double and returns true if the number to the left of the point is even and pass it to `myFilter`.
 
+``` swift
+let justEven: (Double) -> Bool = {x in
+    return floor(x).truncatingRemainder(dividingBy: 2.0) == 0
+}
+
+```
+
 e. Use the built in filter method on `theDoubles` to recreate the answers for b, c and d.
+
+``` swift 
+let a = theDoubles.filter({$0 >= 10})
+let b = theDoubles.filter({$0.truncatingRemainder(dividingBy: 1) == 0})
+let c = theDoubles.filter({floor($0).truncatingRemainder(dividingBy: 2) == 0})
+```
 
 Example
 Input:
